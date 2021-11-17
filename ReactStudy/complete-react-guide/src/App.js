@@ -9,8 +9,7 @@ const App = () => {
   ];
 
   const addExpenseHandler = (expenseDataAdded) => {
-    console.log(`App.js`);
-    console.log(expenseDataAdded);
+    console.log(`App.js expenseDataAdded`);
   };
 
   return (
