@@ -12,10 +12,6 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect 2");
-  }, []);
-
-  useEffect(() => {
     const timeoutHandler = setTimeout(() => {
       console.log("inside timeoutHandler");
       setFormIsValid(
