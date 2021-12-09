@@ -27,7 +27,6 @@ const CartProvider = (props) => {
   );
 
   const addItemHandler = (item) => {
-    console.log(`addItemHandler: ${JSON.stringify(item)}`);
     dispatchCartAction({ type: "ADD", item: item });
   };
 
@@ -38,8 +37,8 @@ const CartProvider = (props) => {
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
-    addItem: (item) => addItemHandler,
-    removeItem: (id) => removeItemHandler,
+    addItem: addItemHandler,
+    removeItem: removeItemHandler,
   };
 
   return (
