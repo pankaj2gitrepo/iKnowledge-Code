@@ -27,6 +27,7 @@ const CartProvider = (props) => {
   );
 
   const addItemHandler = (item) => {
+    console.log(`addItemHandler: ${JSON.stringify(item)}`);
     dispatchCartAction({ type: "ADD", item: item });
   };
 
