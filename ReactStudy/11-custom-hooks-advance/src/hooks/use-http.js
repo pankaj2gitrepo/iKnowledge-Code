@@ -19,7 +19,7 @@ const useHttp = () => {
       }
 
       const data = await response.json();
-      applyData(data);
+      applyData(data); // in case of createTask, data here is 2nd argument as first argument is set in bind method.
     } catch (err) {
       setError(err.message || "Something went wrong!");
     }
