@@ -1,4 +1,5 @@
 import useInputControl from "../hooks/use-InputControl";
+import useInputControlWithReducer from "../hooks/use-InputControlWithReducer";
 
 const BasicForm = (props) => {
   const {
@@ -9,7 +10,8 @@ const BasicForm = (props) => {
     inputControlValueChangeHanlder: firstNameInputControlValueChangeHanlder,
     inputControlBlurHanlder: firstNameInputControlBlurHanlder,
     inputControlReset: firstNameInputControlReset,
-  } = useInputControl((value) => value.trim() !== "");
+    //} = useInputControl((value) => value.trim() !== "");
+  } = useInputControlWithReducer((value) => value.trim() !== "");
 
   const {
     inputControlValue: lastNameInputControlValue,
