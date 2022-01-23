@@ -6,6 +6,11 @@ class CounterWithClass extends Component {
   incrementCounterHandler() {
     this.props.increment();
   }
+
+  increaseCounterHandler() {
+    this.props.increase();
+  }
+
   decrementCounterHandler() {
     this.props.decrement();
   }
@@ -19,6 +24,9 @@ class CounterWithClass extends Component {
         <div className={classes.value}>{this.props.counter}</div>
         <button onClick={this.incrementCounterHandler.bind(this)}>
           Increment Counter
+        </button>
+        <button onClick={this.increaseCounterHandler.bind(this)}>
+          Increase Counter by 5
         </button>
         <button onClick={this.decrementCounterHandler.bind(this)}>
           Decrement Counter
@@ -40,6 +48,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (disptach) => {
   return {
     increment: () => disptach({ type: "increment" }),
+    increase: () => disptach({ type: "increase", amount: 5 }),
     decrement: () => disptach({ type: "decrement" }),
   };
 };
