@@ -1,0 +1,24 @@
+syntax = "proto3";
+package tutorial;
+
+option go_package = "github.com/tutorials/go/cricketbookpb";
+
+message Player {
+  string Name = 1;
+  string Country = 2;
+}
+
+message CricketBook {
+  string Tournament = 1;
+  repeated Player Player = 2;
+  bytes fileCsv = 3;
+}
+
+// Compile proto using below command for go API project
+// ../proto >>  protoc --go_out=. --go-grpc_out=. ./cricketbook.proto
+
+// Compile proto using below command for javascript project, e.g react
+// ../proto >>  npm install -g protoc-gen-grpc-web
+// ../proto >>  protoc --js_out=import_style=commonjs,binary:build/gen --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./build/gen ./cricketbook.proto
+
+// npm i protobufjs --save
