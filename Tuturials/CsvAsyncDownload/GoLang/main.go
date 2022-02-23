@@ -17,7 +17,7 @@ func main() {
 	})
 	r.GET("/DownloadCricketBook", api.DownloadCricketBook)
 	r.GET("/GetCricketBookViaProto", api.GetCricketBookViaProto)
-	r.POST("/DownloadCricketBookViaProto", api.DownloadCricketBookViaProto)
+	r.GET("/DownloadCricketBookViaProto", api.DownloadCricketBookViaProto)
 	// start the server
 	r.Run(":5100")
 }
