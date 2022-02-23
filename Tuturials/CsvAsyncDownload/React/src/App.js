@@ -35,15 +35,6 @@ function App() {
     ).then((response) => {
       console.log("response");
       console.log(response);
-
-      const url = window.URL.createObjectURL(new Blob([response.fileCsv]));
-      console.log(url);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `CricketBook.csv`);
-      document.body.appendChild(link);
-      link.click();
-
       return response;
     });
   };
