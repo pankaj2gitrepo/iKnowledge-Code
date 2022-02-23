@@ -16,3 +16,10 @@ message CricketBook {
 
 // Compile proto using below command for go API project
 // ../proto >>  protoc --go_out=. --go-grpc_out=. ./cricketbook.proto
+
+// To generate compiled proto for javascript project, e.g react
+// >> npm install protobufjs --save
+// >> npm install axios --save
+// Add scriptcmd.sh file and run it using below commands
+// >> chmod +x scriptcmd.sh
+// >> ./scriptcmd.sh cricketbookpb cricketbook
