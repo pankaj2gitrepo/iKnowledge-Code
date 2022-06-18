@@ -1,0 +1,71 @@
+* Installations & Run Kafka server with Zookeeper
+  Use binary installation or home brew. Installations using Conduktor gave multiple issues.
+  Follow below steps:
+    a. Install Java JDK version 11
+       Navigate to Amazon Corretto 11 download page https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html (the Amazon distribution of OpenJDK 11)
+       Install amazon-corretto-11-x64-macos-jdk.pkg
+    b. Download Apache Kafka from https://kafka.apache.org/downloads under 'Binary Downloads'. For me, downloaded version is kafka_2.13-3.2.0
+    c. Extract the contents on your Mac ~/opt/ directory
+    d. Setup the $PATH environment variables for easy access to the Kafka binaries
+       e.g export PATH=/Users/Pankaj.Sonawane/opt/kafka_2.13-3.2.0/bin:$PATH
+    d. Start Zookeeper using the binaries in terminal
+       > zookeeper-server-start.sh ~/opt/kafka_2.13-3.1.0/config/zookeeper.properties
+    e. Open file ~/opt/kafka_2.13-3.2.0/config/server.properties.
+       Find in file texts "listeners=PLAINTEXT:" and "advertised.listeners=" is not commented and has ip address mentioned.
+       If not, add below two lines with ip address of your machine. For now, my machine ip is 192.168.96.131, so added below lines. 
+       ...
+       listeners=PLAINTEXT://192.168.96.131:9092
+       advertised.listeners=PLAINTEXT://192.168.96.131:9092
+       ...
+       
+       Save the file.
+    f. Start Kafka using the binaries in another terminal
+       > kafka-server-start.sh ~/opt/kafka_2.13-3.2.0/config/server.properties
+
+* Topic
+  Open another terminal and use below commands as per need.
+  a. List Topic
+     > kafka-topics.sh --bootstrap-server 192.168.96.131:9092 --list
+  b. Create Topic
+     > kafka-topics.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --create
+  b. Create Topic with partition
+     > kafka-topics.sh --bootstrap-server 192.168.96.131:9092 --topic second_topic --create --partitions 2
+  b. Create Topic with partition, replication factor
+     > kafka-topics.sh --bootstrap-server 192.168.96.131:9092 --topic second_topic --create --partitions 2 --replication-factor 1
+  c. Delete Topic
+     > kafka-topics.sh --bootstrap-server 192.168.96.131:9092 --topic second_topic --delete
+  d. Describe a topic details
+     > kafka-topics.sh --bootstrap-server 192.168.96.131:9092 --topic third_topic --describe
+
+   Note:
+   Partitions are internal, one should not worry which partition the message has arrived.
+   Developer will get message on topic to all its group.
+
+* Producer and Consumer
+  a. Producer, creates topic first_topic if not already created.
+     > kafka-console-producer.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic
+  b. Producer with ack
+     > kafka-console-producer.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --producer-property acks=all
+  c. Consumer reading from current offset
+     > kafka-console-consumer.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic
+  d. Consumer reading from beginning offset
+     > kafka-console-consumer.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --from-beginning
+  d. Consumer with group, One topic can opt to have group name, which may belong to other topic.
+     > kafka-console-consumer.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --group group-01
+  e. Reset offset to beginning
+     > kafka-consumer-groups.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --group group-01 --reset-offsets --to-earliest --execute
+  f. Describe group by name, e.g group-01. All groups with same group name from all topics will be listed.
+     > kafka-consumer-groups.sh --bootstrap-server 192.168.96.131:9092 --group group-01 --describe
+  g. Reset offset by 2
+     > kafka-consumer-groups.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --group group-01 --reset-offsets --shift-by 2 --execute
+  h. Reset offset by -2, from all partitions. If there are 2 partitions, then reset -2, will reset 4 messages, 2 from each partition
+     > kafka-consumer-groups.sh --bootstrap-server 192.168.96.131:9092 --topic first_topic --group group-01 --reset-offsets --shift-by -2 --execute
+   Note:
+   If consumer topic started without group, then message produced on the topic will be lost if the consumer topic is not alive at the time message was produced, unless we use --from-beginning flag to fetch all messages.
+   If consumer topic was started with group earlier, then first, it will fetch messages which are produced after last time the consumer topic with group was stopped, and then starts listening for message produced on the topic.
+   If consumer topic started with new group, it will start to fetch message from that time or later. It will not fetch messages which was produced earlier.
+   To fetch all messages from beginning, --from-beginning flag with --group can be used.
+   Consider group as application, which will receive all messages on its starts, from its last stop.
+   
+
+* 
