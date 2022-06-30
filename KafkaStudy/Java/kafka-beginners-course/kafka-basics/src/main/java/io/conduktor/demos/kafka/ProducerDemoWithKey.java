@@ -17,15 +17,16 @@ public class ProducerDemoWithKey {
 
     public static void main(String[] args) throws InterruptedException {
         logger.info("Starting Producer With Callback..");
+        String bootstrapServer = "192.168.1.25:9092";
+        String topic = "demo_java";
 
         Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.1.25:9092");
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
-        String topic = "demo_java";
         for (int i=0; i< 10; i++) {
             // Message with Same key always goes to same partition
             String key = "id___" +i;
