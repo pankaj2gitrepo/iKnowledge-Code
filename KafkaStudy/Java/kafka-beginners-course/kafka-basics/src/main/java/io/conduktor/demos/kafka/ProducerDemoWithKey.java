@@ -27,7 +27,7 @@ public class ProducerDemoWithKey {
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
-        for (int i=0; i< 10; i++) {
+        for (int i=0; i< 10000; i++) {
             // Message with Same key always goes to same partition
             String key = "id___" +i;
             String value = "hello world!! Message# " + i;

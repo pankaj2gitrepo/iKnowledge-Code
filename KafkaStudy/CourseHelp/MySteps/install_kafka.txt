@@ -63,9 +63,11 @@
    Note:
    If consumer topic started without group, then message produced on the topic will be lost if the consumer topic is not alive at the time message was produced, unless we use --from-beginning flag to fetch all messages.
    If consumer topic was started with group earlier, then first, it will fetch messages which are produced after last time the consumer topic with group was stopped, and then starts listening for message produced on the topic.
-   If consumer topic started with new group, it will start to fetch message from that time or later. It will not fetch messages which was produced earlier.
+   If consumer topic started with new group, it will start to fetch all messages from start, and then starts listening for message produced on the topic.
    To fetch all messages from beginning, --from-beginning flag with --group can be used.
    Consider group as application, which will receive all messages on its starts, from its last stop.
+   If multiple instances of consumer topic is listening with same group id, then instances align themselves attached to a partition. With this behavour, 
+   a consumer instance will receive messages only from one or more attached partition.
    
 
 * 
