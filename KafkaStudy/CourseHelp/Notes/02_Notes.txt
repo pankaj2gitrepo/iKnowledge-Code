@@ -1,0 +1,71 @@
+* Producer
+1. acks
+   Step 1: Producer sends data to Leader Broker
+   Step 2: Leader Broker receives data
+   Step 3: Leader Broker sends data to replicas
+   Step 4: All replicas including Leader Broker writes data to queue
+
+   acks=0
+   Producer won't wait for acknoledgement.
+
+   acks=1
+   Producer will wait for Leader acknowledgement. Leader Broker sends acknowledgement as soon as it receives data, i.e after Step 2.
+
+   acks=-1 or acks=all
+   Producer will wait for acknowledgement from Leader Broker as well as from replicas.
+   Value from property "min.insync.replicas" is considered to wait for acks from how many replicas. This excludes Leader Broker.
+   If acks=all and min.insync.replicas=1, then Leader Broker will send ack after sending data to one replica, i.e after Step 3
+   If acks=all and min.insync.replicas=2, then Leader Broker will send ack after sending data to two replicas, i.e after Step 3
+
+2. Producer retries
+   If Producer setting expects ack and does not receive ack for the value mentioned at property "delivery.timeout.ms",
+   record will be treated as failed and resent again.
+   Producer will try retry upto value mentioned at "retries"
+
+3. Idempotent Producer
+   Step 1: Producer sends message
+   Step 2: Broker receives message and commit
+   Step 3: Broker sends ack to Producer
+   Step 4: Producer sends next message
+   ... continues
+
+   If network failure happens at Step 3, while sending ack, the Producer will be sending same message again.
+   In this case, Broker will do commit for same message, which leads duplicate commit.
+   To avoid this scenario, just set property "enable.idempotence" to "true", which is default since Kafka 3.0
+   In this case, Broker will not commit for duplicate message, and just send ack to Producer.
+
+4. Message compression
+   Broker Level Compression: Applies to all topics
+   Topic Level Compression: Applies to only the mentioned topic
+
+   - "compression.type"="producer" is a Broker Level Compression, Broker takes compressed batch and writes directly to topic's log file
+   - "compression.type"="none" is a Broker Level Compression, Broker takes compressed batch, decompresses the messages and then writes to topic's log file
+   - "compression.type"="lz4" is a Broker Level Compression, Broker takes compressed batch
+     if compression type is matching with Producer, then data directly stores on disk as is
+     if compression type is not matching with Producer, then Broker decompresses data, compresses it with Broker compression type, and then stores on disk
+     
+   If Broker compression is enabled, then it will consume extra CPU cycles.
+
+5. linger.ms, max.in.flight.requests.per.connection and batch.size
+   If max.in.flight.requests.per.connection is set to 5, then Producer will send max 5 messages in a batch.
+   linger.ms is the time value, upto which Producer will wait to fill batch before sending.
+   e.g Take a case when max.in.flight.requests.per.connection=5, linger.ms=100.
+   If a batch is filled with 2 messages, then Producer will wait for 100ms to fill more messages into the batch before sending.
+
+   batch.size is maximum number of bytes that will be included in a batch.
+   A batch is allocated per partition.
+
+6. buffer.memory and max.block.ms
+   If Producer produces faster than Broker can take, the records will be buffered in memory
+   upto the byte size mentioned at buffer.memory
+   default buffer.memory=33554432, which is 32MB
+
+   If buffer memory is full, then .send() method will start to block (won't return right away) for 
+   the milliseond time mentioned at property max.block.ms
+   default max.block.ms=60000, which is 60 seconds, means on overload buffer memory, 
+   code at .send() will be blocked for 60 seconds, if after 60 seconds, buffer memory is still full, then 
+   .send() method will throw exception.
+
+
+
+
