@@ -66,6 +66,62 @@
    code at .send() will be blocked for 60 seconds, if after 60 seconds, buffer memory is still full, then 
    .send() method will throw exception.
 
+7. Consumer Delivery Semantics
+   - At most once: Offsets are committed as soon as message batch is received, i.e before processing.
+   If something goes wrong after processing few messages from batch, the processing of messages after the 
+   failure will be lost, as next time, consumer will be receiving message after last committed point.
+   - At least once(prefered): Offsets are committed after processing all messages from batch.
+   If something goes wrong after processing few messages from batch, commit will never happen.
+   Next time, consumer will be receiving already processed message twice. In this case, the consumer processing 
+   system should be kept as Idempotent to avoid impact on system if same message processed multiple times.
+   - Exactly once: Can be achieved using transactional API
 
+8. Auto commit
+   - enable.auto.commit=true & auto.commit.interval.ms=5000
+   Commit will be done at poll() method, after time value mentioned at auto.commit.interval.ms is passed.
+   Consumer enables auto commits after every 5 seconds, at poll() method. If poll() method gets call at 4th second after last commit,
+   it won't do commit, If poll() method gets call after 5 seconds from last commit, e.g at 6th second, the commit will be done that time.
+   - enable.auto.commit=false
+   Consumer has to take care call to commitAsync() manually.
 
+9. Offset reset behaviour
+   - auto.offset.reset=latest: consumer will read from end of log
+   - auto.offset.reset=earliest: consumer will read from start of log
+   - auto.offset.reset=none: consumer will throw exception if tries to read from log
 
+10. Broker setting offset.retention.minutes
+   Consumer offset will be lost, if consumer has not ready any message, after the value mentioned at offset.retention.minutes.
+
+11. heartbeat.interval.ms and sesssion.timeout.ms
+   One of consumer thread sends a heartbeat byte to Kafka Broker, after every time value mentioned at heartbeat.interval.ms. Default heartbeat.interval.ms is 3 seconds.
+   If no heartbeat byte is received to Kafka Broker from a consumer for duration time mentioned in sesssion.timeout.ms, the consumer is considered as dead.
+   Default session.timeout.ms is 45 seconds.
+   sesssion.timeout.ms is useful to detect issue at cosumer.
+
+12. max.poll.interval.ms
+   Maximum time between two poll() calls, before declaring consumer as dead.
+   Default max.poll.interval.ms is 5 minutes.
+   max.poll.interval.ms is useful to detect data processing issue with the consumer.
+
+13. max.poll.records
+   Maximum number of records to receive per poll request.
+   Default max.poll.records is 500.
+
+14. fetch.min.bytes
+   Minimun data bytes to pull on each request.
+   Default fetch.min.bytes is 1.
+
+15. fetch.max.wait.ms
+   Maximum amount of time the Kafka Broker will block before answering the fetch request to immdediately satisfy 
+   value from fetch.min.bytes.
+   e.g. fetch.min.bytes=5 and fetch.max.wait.ms=500: Until the requirement of 5 bytes to be satisfied, 
+   broker will wait for 500 milliseond of latency before the fetch returns data to consumer.
+   Default fetch.max.wait.ms is 500.
+
+16. max.partition.fetch.bytes
+   Maximum amount of data per partition the server will return.
+   Default max.partition.fetch.bytes is 1 MB.
+
+17. fetch.max.bytes
+   Maximum data returned for each request.
+   Default fetch.max.bytes is 55 MB.

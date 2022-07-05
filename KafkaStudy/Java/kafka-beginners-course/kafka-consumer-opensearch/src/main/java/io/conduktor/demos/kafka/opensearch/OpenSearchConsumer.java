@@ -89,8 +89,12 @@ public class OpenSearchConsumer {
                     logger.info("Key: " + record.key() + ", Value: " + record.value());
                     logger.info("Partition: " + record.partition() + ", Offset: " + record.offset());
 
+                    // for idempotent consumer
+                    String id = record.topic() + "_" + record.partition() + "_" + record.offset()
+
                     IndexRequest indexRequest = new IndexRequest("wikimedia")
-                            .source(record.value(), XContentType.JSON);
+                            .source(record.value(), XContentType.JSON)
+                            .id(id);
                     IndexResponse response = openSearchClient.index(indexRequest, RequestOptions.DEFAULT);
 
                     logger.info("Inserting 1 document into OpenSearch, response: " + response.getId());
