@@ -1,15 +1,14 @@
-* Producer
 1. acks
    Step 1: Producer sends data to Leader Broker
    Step 2: Leader Broker receives data
    Step 3: Leader Broker sends data to replicas
-   Step 4: All replicas including Leader Broker writes data to queue
+   Step 4: Leader Broker and all replicas writes data to queue
 
    acks=0
    Producer won't wait for acknoledgement.
 
    acks=1
-   Producer will wait for Leader acknowledgement. Leader Broker sends acknowledgement as soon as it receives data, i.e after Step 2.
+   Producer will wait for Leader Broker acknowledgement. Leader Broker sends acknowledgement as soon as it receives data, i.e after Step 2.
 
    acks=-1 or acks=all
    Producer will wait for acknowledgement from Leader Broker as well as from replicas.
@@ -90,7 +89,7 @@
    - auto.offset.reset=none: consumer will throw exception if tries to read from log
 
 10. Broker setting offset.retention.minutes
-   Consumer offset will be lost, if consumer has not ready any message, after the value mentioned at offset.retention.minutes.
+   Consumer offset will be lost, if consumer has not read any message, after the value mentioned at offset.retention.minutes.
 
 11. heartbeat.interval.ms and sesssion.timeout.ms
    One of consumer thread sends a heartbeat byte to Kafka Broker, after every time value mentioned at heartbeat.interval.ms. Default heartbeat.interval.ms is 3 seconds.
