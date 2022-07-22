@@ -1,0 +1,56 @@
+> docker images
+List all images
+
+> docker pull busybox
+OR
+> docker pull busybox:latest
+Pulls latest busybox image from docker hub
+
+> docker pull busybox:1.24
+Pulls version 1.24 busybox image from docker hub, having tag 1.24
+
+> docker image rm -f busybox:1.24
+Removes the image named busybox:1.24. Flag -f forces removing image, even though containers are present.
+
+> docker run busybox:1.24 echo "Hello World"
+If busybox image is not present, the command pulls 1.24 version of busybox and runs the echo statement after container creation
+
+> docker run busybox:1.24 ls /
+Displays all components present in the root directory of busybox image
+
+> docker run -i -t busybox:1.24
+To enter into interactive console of the container
+
+> docker run -d busybox:1.24
+To run docker container busybox:1.24 in detached mode, i.e in background
+
+> docker ps
+To list all running containers
+
+> docker ps -a
+To list all containers including one, which are stopped
+
+> docker stop <<container_id>>
+Stops container
+
+> docker rm <<container_id>>
+Removes the container having id container_id
+
+> docker run --name hello_world busybox:1.24
+To run docker container busybox:1.24 and named the container as hello_world
+
+> docker inspect <<container_id>>
+To display useful low level information of container
+
+> docker run -it -p 8099:8080 tomcat:8.0
+Runs tomcat:8.0 container and maps port 8080 of container to 8099 of host machine.
+From host machine, tomcat is accessible from port 8099 i.e http://localhost:8099 from host machine, will open tomcat home page from container.
+
+> docker logs <<container_id>>
+To view the container logs
+
+> 
+
+
+
+
