@@ -1,0 +1,13 @@
+Download linux image, named debian with tag jessie, install git and create another image having debian with git
+
+> docker run -it debian:jessie
+Downlaod debian:jessie image, and run it in interactive mode
+
+> apt-get update && apt-get install -y git
+Update the image by installing git
+
+> exit
+Exit from interactive mode
+
+> docker commit a7bd929a93ce pankajexplores/debian:1.0
+format: docker commit <<container_id>> <<dockerid>>/<<new_image_name>>:<<new_tag>>

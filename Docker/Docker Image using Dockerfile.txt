@@ -1,0 +1,43 @@
+Download linux image, named debian with tag jessie, install git and create another image having debian with git
+
+- Create file with name "Dockerfile" without any extension
+FROM debian:jessie
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install -y vim
+
+- Run below commands in terminal
+> docker build -t pankajexplores/debian .
+Format: docker build -t <<dockerid>>/<<new_image_name>> <<relative_path_to_Dockerfile>>
+
+- Image will be created with tag "latest"
+
+- To reduce number of layers in image, chain RUN instructions like
+> RUN apt-get update && apt-get install -y git && apt-get install -y vim
+OR
+> RUN apt-get update && apt-get install -y \
+git \
+vim
+
+- CMD instruction specifies what command to run when the container starts up.
+e.g If we add below CMD instruction at the end of Dockerfile,
+it will print "hello world!!" when we start container from this image
+CMD ["echo", "hello world!!"]
+
+- COPY instruction copies files, folders to the file system of image
+e.g If we add below COPY instruction at the end of Dockerfile,
+it will add the file "abc.txt" from current location to the image filesystem at "/src/abc.txt"
+> COPY abc.txt /src/abc.txt
+
+- Copy the image with new tag and repository name
+> docker tag a29d2522c618 pankajexplores/debian:1.0
+Format: docker tag <<image_id>> <<local_repository_path>>/<<new_image_name>>:<<tag>>
+
+- PUSH docker image from local to dockerhub. Makesure, local docker image repository path matches with dockerhub repository.
+e.g local image name "pankajexplores/debian:1.0", where "pankajexplores" is dockerhub id
+> docker login --username=pankajexplores
+Password: Me2@DockerHub
+> docker push pankajexplores/debian:1.0
+
+
+
