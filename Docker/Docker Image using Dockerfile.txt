@@ -1,4 +1,4 @@
-Download linux image, named debian with tag jessie, install git and create another image having debian with git
+Image 1: Download linux image, named debian with tag jessie, install git and create another image having debian with git
 
 - Create file with name "Dockerfile" without any extension
 FROM debian:jessie
@@ -40,4 +40,48 @@ Password: Me2@DockerHub
 > docker push pankajexplores/debian:1.0
 
 
+
+
+
+
+
+Image 2: Check folder 05 under CodeFiles.
+Download Ubuntu image, install python, install our custom application
+
+- Create Dockerfile
+File: Dockerfile
+FROM ubuntu
+
+RUN apt-get update
+RUN apt-get install -y python3
+RUN apt-get -y install python3-pip
+RUN pip install flask
+
+COPY app.py /opt/app.py
+
+ENTRYPOINT FLASK_APP=app.py flask run --host=0.0.0.0
+
+- Create python source code file app.py
+import os
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def main():
+    return "Welcome!"
+
+@app.route('/how are you')
+def hello():
+    return 'I am good, how about you?'
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+
+
+- Navigate to folder where we have app.py and Dockerfile
+Run below command to create image with name my-simple-webapp
+> docker build . -t my-simple-webapp
+
+To run image my-simple-webapp
+> docker run my-simple-webapp
 

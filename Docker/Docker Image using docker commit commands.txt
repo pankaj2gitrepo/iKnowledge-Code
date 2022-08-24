@@ -1,4 +1,4 @@
-Download linux image, named debian with tag jessie, install git and create another image having debian with git
+Image 1: Download linux image, named debian with tag jessie, install git and create another image having debian with git
 
 > docker run -it debian:jessie
 Downlaod debian:jessie image, and run it in interactive mode
@@ -11,3 +11,53 @@ Exit from interactive mode
 
 > docker commit a7bd929a93ce pankajexplores/debian:1.0
 format: docker commit <<container_id>> <<dockerid>>/<<new_image_name>>:<<new_tag>>
+
+
+
+
+Image 2: Download Ubuntu image, install python, install our custom application
+
+> docker run -it ubuntu bash
+Downloads ubuntu latest image and opens shell window interactive mode
+
+> apt-get update
+Update package list
+
+> apt-get install -y python3
+Install python in docker image ubuntu
+
+> apt-get -y install python3-pip
+Install python pip in docker image ubuntu
+
+> pip install flask
+Installs flask
+
+> cat > /opt/app.py
+Paste python source code and press control+z to save and exit.
+Creates a python source code file inside docker image ubuntu
+File: /opt/app.py
+import os
+from flask import Flask
+app = Flask(__name__)
+
+@app.route("/")
+def main():
+    return "Welcome!"
+
+@app.route('/how are you')
+def hello():
+    return 'I am good, how about you?'
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+
+
+> cd opt
+Navigate to opt folder where the file is created.
+
+> FLASK_APP=app.py flask run --host=0.0.0.0
+Runs a web application.
+
+
+
+

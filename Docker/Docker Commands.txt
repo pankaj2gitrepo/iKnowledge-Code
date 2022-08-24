@@ -55,3 +55,7 @@ To open bash in interactive mode for the container running with container_id
 > docker run -it -p 9880:5000 --link redis dockerapp:v0.3
 Format: docker run -it -p <<local_port>>:<<container_port>> --link <<container_name_to_link>> <<image_name_to_start_as_container>>
 If container from image "dockerapp:v0.3" will be using services from container having name "redis"
+
+> docker attach <<container_id>>
+Attaches console to the container
+
