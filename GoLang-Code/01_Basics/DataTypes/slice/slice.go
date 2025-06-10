@@ -15,8 +15,8 @@ func main() {
 	a := [4]string(s) // Convert slice to array
 	fmt.Println("a: ", a)
 	// earlier of 1.20, uses below way to copy slice to array
-	//a := [4]string{}
-	//copy(a[:], s)
+	// a := [4]string{}
+	// copy(a[:], s)
 
 	// go 1.21
 	maxi := max(1, 2, 3, 4, 0)
