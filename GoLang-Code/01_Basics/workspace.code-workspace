@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "Channel"
+		},
+		{
+			"path": "DataTypes"
+		},
+		{
+			"path": "Module"
+		},
+		{
+			"path": "MutexMap"
+		},
+		{
+			"path": "SmallProjectCards"
+		}
+	]
+}

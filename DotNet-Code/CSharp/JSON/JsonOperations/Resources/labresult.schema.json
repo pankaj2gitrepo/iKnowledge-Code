@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "specversion": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "datacontenttype": {
+      "type": "string"
+    },
+    "time": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "triggeredby": {
+      "type": "string"
+    },
+    "fhirresourceurl": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "ptid": {
+          "type": "string"
+        },
+        "ptvisitid": {
+          "type": "string"
+        },
+        "testid": {
+          "type": "string"
+        },
+        "testresultgroupid": {
+          "type": "string"
+        },
+        "testresultid": {
+          "type": "string"
+        },
+        "revisionno": {
+          "type": "string"
+        },
+        "compname": {
+          "type": "string"
+        },
+        "testvalue": {
+          "type": "string"
+        },
+        "testvaluestring": {
+          "type": "string"
+        },
+        "unitid": {
+          "type": "string"
+        },
+        "datetestpttest": {
+          "type": "string"
+        },
+        "readonlyind": {
+          "type": "string"
+        },
+        "resultapprovedind": {
+          "type": "string"
+        },
+        "validentryind": {
+          "type": "string"
+        },
+        "translogmuserid": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ptid",
+        "ptvisitid",
+        "testid",
+        "testresultgroupid",
+        "testresultid",
+        "revisionno",
+        "compname",
+        "testvalue",
+        "testvaluestring",
+        "unitid",
+        "datetestpttest",
+        "readonlyind",
+        "resultapprovedind",
+        "validentryind",
+        "translogmuserid"
+      ]
+    }
+  },
+  "required": [
+    "type",
+    "specversion",
+    "id",
+    "datacontenttype",
+    "time",
+    "source",
+    "triggeredby",
+    "fhirresourceurl"
+  ]
+}
